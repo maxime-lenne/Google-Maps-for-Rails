@@ -20,6 +20,7 @@ module Gmaps4rails
   autoload :Geocoder,         'gmaps4rails/api_wrappers/geocoder'
   autoload :Direction,        'gmaps4rails/api_wrappers/direction'
   autoload :Places,           'gmaps4rails/api_wrappers/places'
+  autoload :PlacesAutocomplete,           'gmaps4rails/api_wrappers/places_autocomplete'
   autoload :ObjectAccessor,   'gmaps4rails/object_accessor'
 
   mattr_accessor :http_proxy, :escape_js_url
@@ -78,22 +79,20 @@ module Gmaps4rails
       :radius   => radius, 
       :lang     => lang,
       :raw      => raw,
-      :protocol => protocol,
-      :method => "search"
+      :protocol => protocol
     }).get
   end
   
   # does a places query around give geo location (lat/lng)
   # IMPORTANT: Places API calls require an API key (param "key")
-  def Gmaps4rails.places_autocomplete(lat, lng, key, input, radius, lang="en", protocol = "https")
-    Gmaps4rails::Places.new(lat, lng, {
+  def Gmaps4rails.places_autocomplete(lat, lng, key, input, radius, lang="en", raw = false, protocol = "https")
+    Gmaps4rails::PlacesAutocomplete.new(lat, lng, {
       :key      => key,
       :keyword  => keyword,
       :radius   => radius, 
       :lang     => lang,
       :raw      => true,
-      :protocol => protocol,
-      :method => "search"
+      :protocol => protocol
     }).get
   end
   

@@ -1,15 +1,14 @@
 module Gmaps4rails
 
-  class Places
+  class PlacesAutocomplete
     
     include BaseNetMethods
     
     attr_reader :lat, :lng
-    delegate :key, :keyword, :radius, :lang, :raw, :protocol, :to => :@options
+    delegate :key, :keyword, :radius, :lang, :raw, :protocol, :method, :to => :@options
         
     def initialize(lat, lng, options = {})
       @lat, @lng = lat, lng
-      raise_invalid     unless valid_position?
       raise_missing_key unless options[:key]
       options[:radius]  ||= 7500
       options[:lang]    ||= "en"
@@ -37,17 +36,9 @@ module Gmaps4rails
     private
     
     def base_request
-      req = "#{protocol}://maps.googleapis.com/maps/api/place/search/json?language=#{lang}&location=#{lat},#{lng}&sensor=false&radius=#{radius}&key=#{key}"
+      req = "#{protocol}://maps.googleapis.com/maps/api/place/autocomplete/json?language=#{lang}&location=#{lat},#{lng}&sensor=false&radius=#{radius}&key=#{key}"
       req += "&keyword=#{keyword}" unless keyword.nil?
       req
-    end
-    
-    def valid_position?
-      !(lat.nil? || lng.nil?)
-    end
-    
-    def raise_invalid
-      raise Gmaps4rails::PlacesInvalidQuery, "You must provide at least a lat/lon for a Google places query"
     end
     
     def raise_missing_key
