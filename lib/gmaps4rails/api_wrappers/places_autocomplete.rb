@@ -5,17 +5,16 @@ module Gmaps4rails
     include BaseNetMethods
     
     attr_reader :input, :sensor
-    delegate :key, :keyword,:lat, :lng, :radius, :lang, :raw, :protocol, :offset, :types, :components, :to => :@options
+    delegate :key, :lat, :lng, :radius, :lang, :raw, :protocol, :offset, :types, :components, :to => :@options
         
     def initialize(input, sensor, options = {})
-      @input = input
+      @input, @sensor = input, sensor
       raise_missing_key unless options[:key]
       raise_invalid     unless valid_input?
       #options[:lat]  ||= 7500
       #options[:lng]  ||= 7500
       #options[:radius]  ||= 7500
       #options[:lang]    ||= "en"
-      options[:sensor]     ||= false
       options[:raw]     ||= false
       options[:protocol]||= "http"
       @options = OpenStruct.new options
