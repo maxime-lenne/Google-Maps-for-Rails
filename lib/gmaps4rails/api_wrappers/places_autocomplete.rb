@@ -50,6 +50,10 @@ module Gmaps4rails
       !(input.nil? || input.empty?)
     end
     
+    def raise_invalid
+      raise Gmaps4rails::PlacesInvalidQuery, "You must provide at least an input for a Google places autocomplete query"
+    end
+    
     def raise_missing_key
       raise "Google Places API requires an API key"
     end
