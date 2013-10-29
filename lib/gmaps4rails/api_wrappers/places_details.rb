@@ -52,7 +52,7 @@ module Gmaps4rails
     end
     
     def base_request
-      req = "#{protocol}://maps.googleapis.com/maps/api/place/autocomplete/json?&sensor=#{sensor}&key=#{key}&reference=#{reference}"
+      req = "#{protocol}://maps.googleapis.com/maps/api/place/details/json?&sensor=#{sensor}&key=#{key}&reference=#{reference}"
       req += "&language=#{lang}" unless lang.nil?
       req += "&extensions=#{extensions}" unless extensions.nil?
       req
