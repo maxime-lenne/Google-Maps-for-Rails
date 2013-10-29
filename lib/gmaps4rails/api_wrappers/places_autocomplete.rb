@@ -4,14 +4,17 @@ module Gmaps4rails
     
     include BaseNetMethods
     
-    attr_reader :lat, :lng
-    delegate :key, :keyword, :radius, :lang, :raw, :protocol, :method, :to => :@options
+    attr_reader :input, :sensor
+    delegate :key, :keyword,:lat, :lng, :radius, :lang, :raw, :protocol, :offset, :to => :@options
         
-    def initialize(lat, lng, options = {})
-      @lat, @lng = lat, lng
+    def initialize(input, sensor, options = {})
       raise_missing_key unless options[:key]
-      options[:radius]  ||= 7500
-      options[:lang]    ||= "en"
+      raise_invalid     unless valid_input?
+      #options[:lat]  ||= 7500
+      #options[:lng]  ||= 7500
+      #options[:radius]  ||= 7500
+      #options[:lang]    ||= "en"
+      options[:sensor]     ||= false
       options[:raw]     ||= false
       options[:protocol]||= "http"
       @options = OpenStruct.new options
@@ -20,13 +23,11 @@ module Gmaps4rails
     def get
       checked_google_response do
         return parsed_response if raw
-        parsed_response["results"].inject([]) do |memo, result|
+        parsed_response["predictions"].inject([]) do |memo, result|
           memo << { 
-                   :lat       => result["geometry"]["location"]["lat"], 
-                   :lng       => result["geometry"]["location"]["lng"],
-                   :name      => result["name"],
-                   :reference => result["reference"],
-                   :vicinity  => result["vicinity"],
+                   :description       => result["name"],
+                   :reference         => result["reference"],
+                   :types             => result["types"],
                    :full_data => result
                   }
         end
@@ -36,9 +37,17 @@ module Gmaps4rails
     private
     
     def base_request
-      req = "#{protocol}://maps.googleapis.com/maps/api/place/autocomplete/json?language=#{lang}&location=#{lat},#{lng}&sensor=false&radius=#{radius}&key=#{key}"
-      req += "&keyword=#{keyword}" unless keyword.nil?
+      req = "#{protocol}://maps.googleapis.com/maps/api/place/autocomplete/json?&sensor=#{sensor}&key=#{key}&input=#{input}"
+      req += "&language=#{lang}" unless lang.nil?
+      req += "&location=#{lat},#{lng}&radius=#{radius}" unless lat.nil? and lng.nil? and radius.nil?
+      req += "&offset=#{offset}" unless offset.nil?
+      req += "&types=#{types}" unless types.nil?
+      req += "&components=#{components}" unless components.nil?
       req
+    end
+    
+    def valid_input?
+      !input.empty?
     end
     
     def raise_missing_key

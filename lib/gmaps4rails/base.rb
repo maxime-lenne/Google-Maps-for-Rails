@@ -62,7 +62,7 @@ module Gmaps4rails
   # optionally a keyword can be given for a filter over all places fields (e.g. "Bungy" to give all Bungy related places)
   # IMPORTANT: Places API calls require an API key (param "key")
  
-  def Gmaps4rails.places_for_address(address, key, keyword = nil, radius = 7500, lang="en", raw = false)
+  def Gmaps4rails.places_for_address(address, key, keyword = nil, radius = 7500, lang = "en", raw = false)
     raise Gmaps4rails::GeocodeInvalidQuery, "you must provide an address for a places_for_address query" if address.nil?
     raise "Google Places API requires an API key" if key.nil?
     res = Gmaps4rails.geocode(address)  # will throw exception if nothing could be geocoded
@@ -72,7 +72,7 @@ module Gmaps4rails
   # does a places query around give geo location (lat/lng)
   # optionally a keyword can be given for a filter over all places fields (e.g. "Bungy" to give all Bungy related places)
   # IMPORTANT: Places API calls require an API key (param "key")
-  def Gmaps4rails.places(lat, lng, key, keyword = nil, radius = 7500, lang="en", raw = false, protocol = "https")
+  def Gmaps4rails.places(lat, lng, key, keyword = nil, radius = 7500, lang = "en", raw = false, protocol = "https")
     Gmaps4rails::Places.new(lat, lng, {
       :key      => key,
       :keyword  => keyword,
@@ -83,15 +83,17 @@ module Gmaps4rails
     }).get
   end
   
-  # does a places query around give geo location (lat/lng)
+  # returns place predictions with a textual search string and optional geographic bounds
   # IMPORTANT: Places API calls require an API key (param "key")
-  def Gmaps4rails.places_autocomplete(lat, lng, key, input, radius, lang="en", raw = false, protocol = "https")
-    Gmaps4rails::PlacesAutocomplete.new(lat, lng, {
+  def Gmaps4rails.places_autocomplete(input, key, lat = nil, lng = nil, radius = nil, types = nil, lang = nil, sensor = "false", raw = false, protocol = "https")
+    Gmaps4rails::PlacesAutocomplete.new(input, sensor, {
       :key      => key,
-      :keyword  => keyword,
-      :radius   => radius, 
+      :lat      => lat,
+      :lng      => lng,
+      :radius   => radius,
+      :types    => types, 
       :lang     => lang,
-      :raw      => true,
+      :raw      => raw,
       :protocol => protocol
     }).get
   end
