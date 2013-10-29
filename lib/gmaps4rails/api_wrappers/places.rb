@@ -5,7 +5,7 @@ module Gmaps4rails
     include BaseNetMethods
     
     attr_reader :lat, :lng
-    delegate :key, :keyword, :radius, :lang, :raw, :protocol, :to => :@options
+    delegate :key, :keyword, :radius, :lang, :raw, :protocol, :method, :to => :@options
         
     def initialize(lat, lng, options = {})
       @lat, @lng = lat, lng
@@ -15,6 +15,7 @@ module Gmaps4rails
       options[:lang]    ||= "en"
       options[:raw]     ||= false
       options[:protocol]||= "http"
+      options[:method] ||= "search"
       @options = OpenStruct.new options
     end
     
@@ -37,7 +38,7 @@ module Gmaps4rails
     private
     
     def base_request
-      req = "#{protocol}://maps.googleapis.com/maps/api/place/search/json?language=#{lang}&location=#{lat},#{lng}&sensor=false&radius=#{radius}&key=#{key}"
+      req = "#{protocol}://maps.googleapis.com/maps/api/place/#{method}/json?language=#{lang}&location=#{lat},#{lng}&sensor=false&radius=#{radius}&key=#{key}"
       req += "&keyword=#{keyword}" unless keyword.nil?
       req
     end

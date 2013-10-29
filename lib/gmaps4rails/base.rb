@@ -78,7 +78,22 @@ module Gmaps4rails
       :radius   => radius, 
       :lang     => lang,
       :raw      => raw,
-      :protocol => protocol
+      :protocol => protocol,
+      :method => "search"
+    }).get
+  end
+  
+  # does a places query around give geo location (lat/lng)
+  # IMPORTANT: Places API calls require an API key (param "key")
+  def Gmaps4rails.places_autocomplete(lat, lng, key, input, radius, lang="en", protocol = "https")
+    Gmaps4rails::Places.new(lat, lng, {
+      :key      => key,
+      :keyword  => keyword,
+      :radius   => radius, 
+      :lang     => lang,
+      :raw      => true,
+      :protocol => protocol,
+      :method => "search"
     }).get
   end
   
