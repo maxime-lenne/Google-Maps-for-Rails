@@ -5,7 +5,7 @@ module Gmaps4rails
     include BaseNetMethods
     
     attr_reader :input, :sensor
-    delegate :key, :keyword,:lat, :lng, :radius, :lang, :raw, :protocol, :offset, :types, :components :to => :@options
+    delegate :key, :keyword,:lat, :lng, :radius, :lang, :raw, :protocol, :offset, :types, :components, :to => :@options
         
     def initialize(input, sensor, options = {})
       @input = input
