@@ -8,6 +8,7 @@ module Gmaps4rails
     delegate :key, :keyword,:lat, :lng, :radius, :lang, :raw, :protocol, :offset, :to => :@options
         
     def initialize(input, sensor, options = {})
+      @input = input
       raise_missing_key unless options[:key]
       raise_invalid     unless valid_input?
       #options[:lat]  ||= 7500
