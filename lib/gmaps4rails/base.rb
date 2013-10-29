@@ -21,6 +21,7 @@ module Gmaps4rails
   autoload :Direction,        'gmaps4rails/api_wrappers/direction'
   autoload :Places,           'gmaps4rails/api_wrappers/places'
   autoload :PlacesAutocomplete,           'gmaps4rails/api_wrappers/places_autocomplete'
+  autoload :PlacesDetails,    'gmaps4rails/api_wrappers/places_details'
   autoload :ObjectAccessor,   'gmaps4rails/object_accessor'
 
   mattr_accessor :http_proxy, :escape_js_url
@@ -95,6 +96,18 @@ module Gmaps4rails
       :lang     => lang,
       :raw      => raw,
       :protocol => protocol
+    }).get
+  end
+  
+  # returns place predictions with a textual search string and optional geographic bounds
+  # IMPORTANT: Places API calls require an API key (param "key")
+  def Gmaps4rails.places_details(reference, key, extensions = nil, lang = nil, sensor = "false", raw = false, protocol = "https")
+    Gmaps4rails::PlacesDetails.new(reference, sensor, {
+      :key        => key,
+      :extensions => extensions,
+      :lang       => lang,
+      :raw        => raw,
+      :protocol   => protocol
     }).get
   end
   

@@ -11,10 +11,6 @@ module Gmaps4rails
       @input, @sensor = input, sensor
       raise_missing_key unless options[:key]
       raise_invalid     unless valid_input?
-      #options[:lat]  ||= 7500
-      #options[:lng]  ||= 7500
-      #options[:radius]  ||= 7500
-      #options[:lang]    ||= "en"
       options[:raw]     ||= false
       options[:protocol]||= "http"
       @options = OpenStruct.new options
