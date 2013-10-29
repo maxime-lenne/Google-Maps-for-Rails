@@ -25,7 +25,7 @@ module Gmaps4rails
         return parsed_response if raw
         parsed_response["predictions"].inject([]) do |memo, result|
           memo << { 
-                   :description       => result["name"],
+                   :description       => result["description"],
                    :reference         => result["reference"],
                    :types             => result["types"],
                    :full_data => result
