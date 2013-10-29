@@ -19,23 +19,21 @@ module Gmaps4rails
     def get
       checked_google_response do
         return parsed_response if raw
-        parsed_response["result"].inject([]) do |memo, result|
-          memo << { 
-                   :lat               => result["geometry"]["location"]["lat"], 
-                   :lng               => result["geometry"]["location"]["lng"],
-                   :street_number     => address_component(result["address_components"], :street_number, 'short_name'),
-                   :street            => address_component(result["address_components"], :route, 'long_name'),
-                   :city              => address_component(result["address_components"], :locality, 'long_name'),
-                   :region            => address_component(result["address_components"], :administrative_area_level_1, 'long_name'),
-                   :postal_code       => address_component(result["address_components"], :postal_code, 'long_name'),
-                   :country           => address_component(result["address_components"], :country, 'long_name'),
-                   :name              => result["name"],
-                   :reference         => result["reference"],
-                   :vicinity          => result["vicinity"],
-                   :formatted_address => result["formatted_address"],
-                   :full_data         => result
-                  }
-        end
+        memo = { 
+                 :lat               => parsed_response["result"]["geometry"]["location"]["lat"], 
+                 :lng               => parsed_response["result"]["geometry"]["location"]["lng"],
+                 :street_number     => address_component(parsed_response["result"]["address_components"], :street_number, 'short_name'),
+                 :street            => address_component(parsed_response["result"]["address_components"], :route, 'long_name'),
+                 :city              => address_component(parsed_response["result"]["address_components"], :locality, 'long_name'),
+                 :region            => address_component(parsed_response["result"]["address_components"], :administrative_area_level_1, 'long_name'),
+                 :postal_code       => address_component(parsed_response["result"]["address_components"], :postal_code, 'long_name'),
+                 :country           => address_component(parsed_response["result"]["address_components"], :country, 'long_name'),
+                 :name              => parsed_response["result"]["name"],
+                 :reference         => parsed_response["result"]["reference"],
+                 :vicinity          => parsed_response["result"]["vicinity"],
+                 :formatted_address => parsed_response["result"]["formatted_address"],
+                 :full_data         => parsed_response["result"]
+                }
       end
     end
     
