@@ -47,7 +47,7 @@ module Gmaps4rails
     end
     
     def valid_input?
-      !input.empty?
+      !(input.nil? || input.empty?)
     end
     
     def raise_missing_key
