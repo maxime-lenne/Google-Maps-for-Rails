@@ -23,7 +23,7 @@ module Gmaps4rails
     end
 
     def valid_parsed_response?
-      parsed_response["status"] == "OK"
+      parsed_response["status"] == "OK" or parsed_response["status"] == "ZERO_RESULTS"
     end
 
     def parsed_response
