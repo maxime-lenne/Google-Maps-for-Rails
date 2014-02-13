@@ -33,7 +33,7 @@ module Gmaps4rails
     private
     
     def base_request
-      req = "#{protocol}://maps.googleapis.com/maps/api/place/autocomplete/json?&sensor=#{sensor}&key=#{key}&input=#{input}"
+      req = "#{protocol}://maps.googleapis.com/maps/api/place/autocomplete/json?sensor=#{sensor}&key=#{key}&input=#{input}"
       req += "&language=#{lang}" unless lang.nil?
       req += "&location=#{lat},#{lng}&radius=#{radius}" unless lat.nil? and lng.nil? and radius.nil?
       req += "&offset=#{offset}" unless offset.nil?
